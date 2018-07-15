@@ -1,4 +1,6 @@
 const Prometheus = require('prom-client')
+const os = require('os');
+
 
 var total_requests = new Prometheus.Counter({
     name: 'total_requests',
@@ -21,7 +23,6 @@ var http_response_ms = new Prometheus.Summary({
 
 
 var startCollection = function () {  
-    console.log('Starting the collection of metrics, the metrics are available on /metrics') 
     require('prom-client').collectDefaultMetrics();
 }
 
@@ -43,8 +44,13 @@ var responseCount = (req,res,next)=>{
 }
 
 
-var injectUrl = function (App) {
-    App.get('/metrics', (req, res) => {
+var metricsUrl = function (app) {
+    app.get('/metrics', (req, res) => {
+        
+        //can be used to get memory metrics
+        // console.log('totalMem',os.totalmem());
+        // console.log('freeMem',os.freemem())
+
         res.set('Content-Type', Prometheus.register.contentType)
         res.end(Prometheus.register.metrics())
     })
@@ -53,5 +59,5 @@ module.exports = {
     'startCollection' : startCollection,
     'requestCount' : requestCount,
     'responseCount' : responseCount,
-    'injectUrl' : injectUrl
+    'metricsUrl' : metricsUrl
 }

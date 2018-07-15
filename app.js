@@ -65,5 +65,5 @@ app.listen(port, () => {
 app.use(Prometheus.requestCount)
 app.use(Prometheus.responseCount)
 
-Prometheus.injectUrl(app)
+Prometheus.metricsUrl(app)
 Prometheus.startCollection()

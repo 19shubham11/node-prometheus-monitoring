@@ -1,0 +1,10 @@
+groups:
+- name: API Response
+  rules:
+  # Alert for any instance that has a median request latency >1s.
+  - alert: APIHighResponseTime
+    expr: avg(rate(http_response_ms_sum[5m]) / rate(http_response_ms_count[5m])) by  (service, method, path, status) > 100
+    for: 30s
+    annotations:
+      summary: "High response time on {{ $labels.instance }} {{ $labels.method }} {{ $labels.path }}"
+      description: "{{ $labels.service }}, {{ $labels.method }} {{ $labels.route }} has a average response time above 100ms (current value: {{ $value }}ms)"
