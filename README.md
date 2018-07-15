@@ -25,7 +25,8 @@ Based on the above two , we can derive and plot a few metrics of our using prome
 
 * Error Rate[TODO]
 * RPM (Requests per minute) =>
-```sum(rate(http_response_ms_sum[1m])) by (service, method, path, status)  * 60```
+    - Average requests per min
+    ```sum(rate(http_response_ms_sum[1m])) by (service, method, path, status)  * 60```
 
 * Average Response Time =>
     - This gives the average response time per request over a defined interval , right now 5 mins.
